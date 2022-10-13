@@ -37,10 +37,11 @@ const showProduct = async (_req: Request, res: Response) => {
 
 const addProduct = async (_req: Request, res: Response) => {
   const product = new Product();
-  try {
+    try {
+      console.log("IN")
     console.log(_req.body.token);
 
-    console.log(_req.body.tst);
+    
     await jwt.verify(_req.body.token, process.env.TOKEN_SECRET as string);
   } catch (err) {
     res.status(401);

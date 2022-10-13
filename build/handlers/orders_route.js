@@ -39,150 +39,187 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var products_1 = require("../models/products");
+var orders_1 = require("../models/orders");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-var products_crud = new products_1.Product();
+var order = new orders_1.Order();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var all_products;
+    var all_orders;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, products_crud.index()];
+            case 0: return [4 /*yield*/, order.index()];
             case 1:
-                all_products = _a.sent();
-                res.json(all_products);
+                all_orders = _a.sent();
+                res.json(all_orders);
                 return [2 /*return*/];
         }
     });
 }); };
-var products_routes = function (app) {
-    app.get("/products", index);
-    app.get("/products/show", showProduct);
-    app.post("/products/insert", addProduct);
-    app.get("/products/filter", getProductsByCat);
+var order_routes = function (app) {
+    app.get("/orders", index);
+    app.get("/orders/show", showOrder);
+    app.post("/orders/insert", insertOrder);
+    app.post("/orders/AddToCart", AddToCart);
     app["delete"]("/products/delete", deleteProduct);
+    app.get("/orders/:userid/showcurrent", getCurrentOrder);
 };
-var showProduct = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, id, all_products, err_1;
+var showOrder = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var err_1, id, target_order, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                product = new products_1.Product();
-                id = Number(_req.query.id);
-                _a.label = 1;
+                _a.trys.push([0, 2, , 3]);
+                console.log(_req.body.token);
+                console.log(_req.body.tst);
+                return [4 /*yield*/, jsonwebtoken_1["default"].verify(_req.body.token, process.env.TOKEN_SECRET)];
             case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, product.show(id)];
+                _a.sent();
+                return [3 /*break*/, 3];
             case 2:
-                all_products = _a.sent();
-                res.json(all_products);
-                return [3 /*break*/, 4];
-            case 3:
                 err_1 = _a.sent();
-                console.log(err_1);
+                res.status(401);
+                res.json("invalid token " + err_1);
+                return [2 /*return*/];
+            case 3:
+                id = Number(_req.query.id);
+                _a.label = 4;
+            case 4:
+                _a.trys.push([4, 6, , 7]);
+                return [4 /*yield*/, order.show(id)];
+            case 5:
+                target_order = _a.sent();
+                res.json(target_order);
+                return [3 /*break*/, 7];
+            case 6:
+                err_2 = _a.sent();
+                console.log(err_2);
                 res.status(400);
-                res.json(err_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                res.json(err_2);
+                return [3 /*break*/, 7];
+            case 7: return [2 /*return*/];
         }
     });
 }); };
-var addProduct = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, err_2, name, category, price, _a, _b, err_3;
+var insertOrder = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var order, err_3, usr_id, _a, _b, err_4;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
-                product = new products_1.Product();
+                order = new orders_1.Order();
                 _c.label = 1;
             case 1:
                 _c.trys.push([1, 3, , 4]);
-                console.log("IN");
                 console.log(_req.body.token);
+                console.log(_req.body.tst);
                 return [4 /*yield*/, jsonwebtoken_1["default"].verify(_req.body.token, process.env.TOKEN_SECRET)];
             case 2:
                 _c.sent();
                 return [3 /*break*/, 4];
             case 3:
-                err_2 = _c.sent();
+                err_3 = _c.sent();
                 res.status(401);
-                res.json("invalid token " + err_2);
+                res.json("invalid token " + err_3);
                 return [2 /*return*/];
             case 4:
-                name = _req.query.name;
-                category = _req.query.category;
-                price = Number(_req.query.price);
+                usr_id = Number(_req.query.userId);
                 _c.label = 5;
             case 5:
                 _c.trys.push([5, 7, , 8]);
-                console.log(name);
-                console.log(category);
-                console.log(price);
-                product.set(name, category, price);
                 _b = (_a = res).json;
-                return [4 /*yield*/, product.insert()];
+                return [4 /*yield*/, order.insert(usr_id)];
             case 6:
                 _b.apply(_a, [_c.sent()]);
                 return [3 /*break*/, 8];
             case 7:
-                err_3 = _c.sent();
-                console.log(err_3);
+                err_4 = _c.sent();
+                console.log(err_4);
                 res.status(400);
-                res.json(err_3);
+                res.json(err_4);
                 return [3 /*break*/, 8];
             case 8: return [2 /*return*/];
         }
     });
 }); };
 var deleteProduct = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, id, deleted_product, err_4;
+    var order, id, deleted_product, err_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                product = new products_1.Product();
+                order = new orders_1.Order();
                 id = Number(_req.query.id);
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, product["delete"](id)];
+                return [4 /*yield*/, order["delete"](id)];
             case 2:
                 deleted_product = _a.sent();
                 res.json(deleted_product);
                 return [3 /*break*/, 4];
             case 3:
-                err_4 = _a.sent();
-                console.log(err_4);
+                err_5 = _a.sent();
+                console.log(err_5);
                 res.status(400);
-                res.json(err_4);
+                res.json(err_5);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
-var getPopProducts = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, pop_products;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+var AddToCart = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var order, err_6, order_id, product_id, quantity, _a, _b, err_7;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
             case 0:
-                id = Number(_req.query.id);
-                return [4 /*yield*/, products_crud.popular(id)];
+                order = new orders_1.Order();
+                _c.label = 1;
             case 1:
-                pop_products = _a.sent();
-                res.json(pop_products);
+                _c.trys.push([1, 3, , 4]);
+                console.log(_req.body.token);
+                console.log(_req.body.tst);
+                return [4 /*yield*/, jsonwebtoken_1["default"].verify(_req.body.token, process.env.TOKEN_SECRET)];
+            case 2:
+                _c.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                err_6 = _c.sent();
+                res.status(401);
+                res.json("invalid token " + err_6);
+                return [2 /*return*/];
+            case 4:
+                order_id = Number(_req.query.orderId);
+                product_id = Number(_req.query.productId);
+                quantity = Number(_req.query.quantity);
+                _c.label = 5;
+            case 5:
+                _c.trys.push([5, 7, , 8]);
+                _b = (_a = res).json;
+                return [4 /*yield*/, order.addToOrder(order_id, product_id, quantity)];
+            case 6:
+                _b.apply(_a, [_c.sent()]);
+                return [3 /*break*/, 8];
+            case 7:
+                err_7 = _c.sent();
+                console.log(err_7);
+                res.status(400);
+                res.json(err_7);
+                return [3 /*break*/, 8];
+            case 8: return [2 /*return*/];
+        }
+    });
+}); };
+var getCurrentOrder = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userid, order, _a, _b;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                console.log(_req.params.userid);
+                userid = Number(_req.params.userid);
+                order = new orders_1.Order();
+                _b = (_a = res).json;
+                return [4 /*yield*/, order.getCurrentOrders(userid)];
+            case 1:
+                _b.apply(_a, [_c.sent()]);
                 return [2 /*return*/];
         }
     });
 }); };
-var getProductsByCat = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var category, products;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                category = _req.query.category;
-                return [4 /*yield*/, products_crud.getByCateory(category)];
-            case 1:
-                products = _a.sent();
-                res.json(products);
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports["default"] = products_routes;
+exports["default"] = order_routes;

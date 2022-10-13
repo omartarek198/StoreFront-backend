@@ -39,18 +39,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.User = void 0;
+exports.Order = void 0;
 var database_1 = __importDefault(require("../database"));
-var dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1["default"].config();
-var bcrypt_1 = __importDefault(require("bcrypt"));
-var User = /** @class */ (function () {
-    function User() {
-        this.firstname = "";
-        this.lastname = "";
-        this.pwd = "";
+var Order = /** @class */ (function () {
+    function Order() {
+        this.prod_id = 0;
+        this.usr_id = 0;
+        this.status = 0;
     }
-    User.prototype.index = function () {
+    Order.prototype.set = function (prod_id, usr_id, status) {
+        this.prod_id = prod_id;
+        this.usr_id = usr_id;
+        this.status = status;
+        //valid
+        return 1;
+    };
+    Order.prototype.insert = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, err_1;
             return __generator(this, function (_a) {
@@ -60,52 +64,50 @@ var User = /** @class */ (function () {
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = "SELECT * FROM users";
+                        sql = "INSERT INTO ORDERS (user_id,status) VALUES (" + id + "," + 1 + ") RETURNING *;";
                         return [4 /*yield*/, conn.query(sql)];
                     case 2:
                         result = _a.sent();
                         conn.release();
                         console.log(result.rows);
+                        console.log(result.rows);
                         return [2 /*return*/, result.rows];
                     case 3:
                         err_1 = _a.sent();
-                        throw new Error("Cannot get users:  " + err_1);
+                        throw new Error("Cannot  insert :  " + err_1);
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    User.prototype.insert = function (fn, ln, pwd) {
+    Order.prototype.addToOrder = function (order_id, product_id, quantity) {
         return __awaiter(this, void 0, void 0, function () {
-            var pepper, hash, conn, sql, result, err_2;
+            var conn, sql, result, err_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        pepper = process.env.BCRYPT_PASSWORD;
-                        hash = bcrypt_1["default"].hashSync(pwd + pepper, parseInt(process.env.SALT_ROUNDS));
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 4, , 5]);
+                        _a.trys.push([0, 3, , 4]);
+                        console.log(product_id);
+                        console.log(quantity);
+                        console.log(order_id);
                         return [4 /*yield*/, database_1["default"].connect()];
-                    case 2:
+                    case 1:
                         conn = _a.sent();
-                        sql = "INSERT INTO USERS(firstname, lastname,pwd) VALUES ('" + fn + "', '" + ln + "', '" + hash + "') RETURNING *;";
+                        sql = "INSERT INTO ORDERS_PRODUCTS (quantity, order_id,product_id) VALUES (" + quantity + ", " + order_id + ", " + product_id + ") RETURNING *;";
                         return [4 /*yield*/, conn.query(sql)];
-                    case 3:
+                    case 2:
                         result = _a.sent();
                         conn.release();
-                        console.log(result.rows);
-                        console.log(result.rows);
                         return [2 /*return*/, result.rows];
-                    case 4:
+                    case 3:
                         err_2 = _a.sent();
                         throw new Error("Cannot  insert :  " + err_2);
-                    case 5: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    User.prototype.show = function (id) {
+    Order.prototype.index = function () {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, err_3;
             return __generator(this, function (_a) {
@@ -115,7 +117,59 @@ var User = /** @class */ (function () {
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = "SELECT  * FROM users\nWHERE id=" + id + ";\n";
+                        sql = "SELECT * FROM ORDERS;";
+                        return [4 /*yield*/, conn.query(sql)];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        console.log(result.rows);
+                        console.log(result.rows);
+                        return [2 /*return*/, result.rows];
+                    case 3:
+                        err_3 = _a.sent();
+                        throw new Error("Cannot  select orders :  " + err_3);
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Order.prototype.show = function (usr_id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, err_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = "SELECCT FROM ORDERS where user_id = " + usr_id + ";";
+                        return [4 /*yield*/, conn.query(sql)];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        console.log(result.rows);
+                        console.log(result.rows);
+                        return [2 /*return*/, result.rows];
+                    case 3:
+                        err_4 = _a.sent();
+                        throw new Error("Cannot  select orders :  " + err_4);
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Order.prototype["delete"] = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, err_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = "DELETE  FROM orders\nWHERE id=" + id + ";\n";
                         return [4 /*yield*/, conn.query(sql)];
                     case 2:
                         result = _a.sent();
@@ -123,13 +177,42 @@ var User = /** @class */ (function () {
                         console.log(result.rows);
                         return [2 /*return*/, result.rows];
                     case 3:
-                        err_3 = _a.sent();
-                        throw new Error("Cannot  show :  " + err_3);
+                        err_5 = _a.sent();
+                        throw new Error("Cannot  show :  " + err_5);
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    return User;
+    Order.prototype.getCurrentOrders = function (usr_id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, err_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log(usr_id);
+                        console.log(usr_id);
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 4, , 5]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 2:
+                        conn = _a.sent();
+                        sql = "\n             SELECT * from ORDERS_PRODUCTS where order_id IN (            SELECT order_id FROM orders\nWHERE id=" + usr_id + " AND status = " + 1 + "\n );";
+                        return [4 /*yield*/, conn.query(sql)];
+                    case 3:
+                        result = _a.sent();
+                        conn.release();
+                        console.log(result.rows);
+                        return [2 /*return*/, result.rows];
+                    case 4:
+                        err_6 = _a.sent();
+                        throw new Error("Cannot  show :  " + err_6);
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return Order;
 }());
-exports.User = User;
+exports.Order = Order;

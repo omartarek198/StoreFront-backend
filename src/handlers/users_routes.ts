@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import { User } from "../models/users";
 import jwt from "jsonwebtoken";
+import { IsValidNumber } from "../utils";
 const usrs_crud = new User();
 const index = async (_req: Request, res: Response) => {
   try {
@@ -57,7 +58,6 @@ const showUser = async (_req: Request, res: Response) => {
   try {
     console.log(_req.body.token);
 
-    console.log(_req.body.tst);
     await jwt.verify(_req.body.token, process.env.TOKEN_SECRET as string);
   } catch (err) {
     res.status(401);
@@ -68,7 +68,13 @@ const showUser = async (_req: Request, res: Response) => {
 
   const user = new User();
 
-  const id = Number(_req.query.id as string);
+    const id = Number(_req.query.id as string);
+    if (!IsValidNumber(id))
+    {
+          res.status(400);
+        res.json("Invalid id");
+    }    
+
 
   try {
     const target_user = await user.show(id);
