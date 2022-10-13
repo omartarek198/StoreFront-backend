@@ -1,5 +1,4 @@
-import bcrypt from 'bcrypt'
-
+import bcrypt from "bcrypt";
 
 export function IsValidNumber(x: number): boolean {
   if (isNaN(x)) {
@@ -21,14 +20,12 @@ export function IsValidString(x: string): boolean {
   return true;
 }
 
-export function hash(x:string):string
-{
-      const pepper = process.env.BCRYPT_PASSWORD;
-    const hashed = bcrypt.hashSync(
-      x + pepper,
-      parseInt(process.env.SALT_ROUNDS as string)
-    );
-  
-  
-  return hashed
+export function hash(x: string): string {
+  const pepper = process.env.BCRYPT_PASSWORD;
+  const hashed = bcrypt.hashSync(
+    x + pepper,
+    parseInt(process.env.SALT_ROUNDS as string)
+  );
+
+  return hashed;
 }

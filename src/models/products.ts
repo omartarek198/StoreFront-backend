@@ -80,17 +80,20 @@ WHERE id=${id} RETURNING *;
     return null;
   }
 
-
- async update(id:number): Promise<Product[]> {
+  async update(id: number): Promise<Product[]> {
     try {
       const conn = await client.connect();
-      const sql = "UPDATE products SET name = $1, price =$2,category = $3 WHERE id= $4 RETURNING *"
+      const sql =
+        "UPDATE products SET name = $1, price =$2,category = $3 WHERE id= $4 RETURNING *";
 
-
-
-      const result = await conn.query(sql,[this.name,this.price,this.category,id]);
+      const result = await conn.query(sql, [
+        this.name,
+        this.price,
+        this.category,
+        id,
+      ]);
       conn.release();
-     
+
       return result.rows;
     } catch (err) {
       throw new Error(`Cannot  Update :  ${err}`);

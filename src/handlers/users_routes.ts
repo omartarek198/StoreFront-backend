@@ -31,7 +31,7 @@ const index = async (_req: Request, res: Response) => {
 const addUsr = async (_req: Request, res: Response) => {
   const fn = _req.query.fn as string;
   const ln = _req.query.ln as string;
-  const pwd = hash( _req.query.pwd as string);
+  const pwd = hash(_req.query.pwd as string);
 
   if (!IsValidString(fn) || !IsValidString(fn) || !IsValidString(pwd)) {
     res.status(400);

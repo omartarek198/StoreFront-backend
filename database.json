@@ -6,7 +6,7 @@
     "user": "storefront_user",
     "password": "1234"
   },
-    "test": {
+  "test": {
     "driver": "pg",
     "host": "127.0.0.1",
     "database": "storefront_test",

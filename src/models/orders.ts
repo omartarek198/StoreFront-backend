@@ -91,8 +91,6 @@ export class Order {
     }
   }
 
-   
-
   async delete(id: number): Promise<User[]> {
     try {
       const conn = await client.connect();
@@ -129,8 +127,6 @@ WHERE id=${usr_id} AND status = ${1}
     }
   }
 
-
-  
   async getCompleteOrders(usr_id: number): Promise<Order[]> {
     console.log(usr_id);
     console.log(usr_id);

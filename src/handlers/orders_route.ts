@@ -25,9 +25,6 @@ const order_routes = (app: express.Application) => {
 
 const showOrder = async (_req: Request, res: Response) => {
   try {
-   
-
-  
     await jwt.verify(_req.body.token, process.env.TOKEN_SECRET as string);
   } catch (err) {
     res.status(401);
@@ -80,11 +77,6 @@ const insertOrder = async (_req: Request, res: Response) => {
     res.json(err);
   }
 };
-
-
-
-
-
 
 const deleteOrder = async (_req: Request, res: Response) => {
   const order = new Order();
