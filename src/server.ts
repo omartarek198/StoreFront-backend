@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 import user_routes from "./handlers/users_routes";
 import products_routes from "./handlers/products_routes";
 import order_routes from "./handlers/orders_route";
-const app: express.Application = express();
+export const app: express.Application = express();
 const address: string = "0.0.0.0:3000";
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.urlencoded({ extended: true }));

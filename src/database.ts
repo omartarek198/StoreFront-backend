@@ -13,15 +13,10 @@ const {
   ENVI,
 } = process.env;
 
-console.log(process.env.ENVI)
-console.log(ENVI)
-
-console.log("process.env.ENVI")
-
+ 
 let client: Pool = new Pool();
 
 if (ENVI === "dev") {
-      console.log("b");
 
   console.log(ENVI);
   client = new Pool({
@@ -36,7 +31,6 @@ else {
 }
 
 if (ENVI === "test") {
-    console.log("o");
 
   client = new Pool({
     

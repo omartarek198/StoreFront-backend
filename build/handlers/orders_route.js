@@ -136,7 +136,7 @@ var insertOrder = function (_req, res) { return __awaiter(void 0, void 0, void 0
             case 5:
                 _c.trys.push([5, 7, , 8]);
                 _b = (_a = res).json;
-                return [4 /*yield*/, order.insert(usr_id)];
+                return [4 /*yield*/, order.create(usr_id)];
             case 6:
                 _b.apply(_a, [_c.sent()]);
                 return [3 /*break*/, 8];

@@ -25,9 +25,9 @@ const order_routes = (app: express.Application) => {
 
 const showOrder = async (_req: Request, res: Response) => {
   try {
-    console.log(_req.body.token);
+   
 
-    console.log(_req.body.tst);
+  
     await jwt.verify(_req.body.token, process.env.TOKEN_SECRET as string);
   } catch (err) {
     res.status(401);
@@ -73,13 +73,18 @@ const insertOrder = async (_req: Request, res: Response) => {
     return;
   }
   try {
-    res.json(await order.insert(usr_id));
+    res.json(await order.create(usr_id));
   } catch (err) {
     console.log(err);
     res.status(400);
     res.json(err);
   }
 };
+
+
+
+
+
 
 const deleteOrder = async (_req: Request, res: Response) => {
   const order = new Order();

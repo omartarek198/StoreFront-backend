@@ -54,7 +54,7 @@ var Order = /** @class */ (function () {
         //valid
         return 1;
     };
-    Order.prototype.insert = function (id) {
+    Order.prototype.create = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, err_1;
             return __generator(this, function (_a) {
@@ -208,6 +208,35 @@ var Order = /** @class */ (function () {
                     case 4:
                         err_6 = _a.sent();
                         throw new Error("Cannot  show :  " + err_6);
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Order.prototype.getCompleteOrders = function (usr_id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, err_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log(usr_id);
+                        console.log(usr_id);
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 4, , 5]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 2:
+                        conn = _a.sent();
+                        sql = "\n             SELECT * from ORDERS_PRODUCTS where order_id IN (            SELECT order_id FROM orders\nWHERE id=" + usr_id + " AND status = " + 0 + "\n );";
+                        return [4 /*yield*/, conn.query(sql)];
+                    case 3:
+                        result = _a.sent();
+                        conn.release();
+                        console.log(result.rows);
+                        return [2 /*return*/, result.rows];
+                    case 4:
+                        err_7 = _a.sent();
+                        throw new Error("Cannot  show :  " + err_7);
                     case 5: return [2 /*return*/];
                 }
             });

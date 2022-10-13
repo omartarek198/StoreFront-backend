@@ -23,7 +23,7 @@ export class Order {
     return 1;
   }
 
-  async insert(id: number): Promise<Order[]> {
+  async create(id: number): Promise<Order[]> {
     try {
       const conn = await client.connect();
       const sql = `INSERT INTO ORDERS (user_id,status) VALUES (${id},${1}) RETURNING *;`;
@@ -91,6 +91,8 @@ export class Order {
     }
   }
 
+   
+
   async delete(id: number): Promise<User[]> {
     try {
       const conn = await client.connect();
@@ -115,6 +117,29 @@ WHERE id=${id};
       const sql = `
              SELECT * from ORDERS_PRODUCTS where order_id IN (            SELECT order_id FROM orders
 WHERE id=${usr_id} AND status = ${1}
+ );`;
+
+      const result = await conn.query(sql);
+
+      conn.release();
+      console.log(result.rows);
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Cannot  show :  ${err}`);
+    }
+  }
+
+
+  
+  async getCompleteOrders(usr_id: number): Promise<Order[]> {
+    console.log(usr_id);
+    console.log(usr_id);
+
+    try {
+      const conn = await client.connect();
+      const sql = `
+             SELECT * from ORDERS_PRODUCTS where order_id IN (            SELECT order_id FROM orders
+WHERE id=${usr_id} AND status = ${0}
  );`;
 
       const result = await conn.query(sql);
