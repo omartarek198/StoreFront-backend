@@ -15,8 +15,7 @@ export class User {
     this.pwd = "";
   }
 
-    async index(): Promise<User[]> {
-       
+  async index(): Promise<User[]> {
     try {
       const conn = await client.connect();
       const sql = "SELECT * FROM users";

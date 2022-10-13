@@ -19,7 +19,7 @@ app.get("/", function requestHandler(req, res) {
 
 products_routes(app);
 user_routes(app);
-order_routes(app)
+order_routes(app);
 app.listen(3000, function () {
   console.log(`starting app on: ${address}`);
 });

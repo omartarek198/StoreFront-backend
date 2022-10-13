@@ -5,11 +5,11 @@
   "main": "server.ts",
   "scripts": {
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
-    "test":"npm run build && npm run jasmine",
+    "test": "npm run build && npm run jasmine",
     "tsc": "tsc",
     "build": "npx tsc",
     "start": "nodemon src/server.ts",
-    "prettier ": "npx prettier --write .",
+    "prettier": "npx prettier --write .",
     "jasmine": "jasmine"
   },
   "author": "Udacity",

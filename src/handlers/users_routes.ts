@@ -4,17 +4,22 @@ dotenv.config();
 import { User } from "../models/users";
 import jwt from "jsonwebtoken";
 import { IsValidNumber } from "../utils";
+import { IsValidString } from "../utils";
 const usrs_crud = new User();
+
+const user_routes = (app: express.Application) => {
+  app.get("/users", index);
+
+  app.get("/users/show", showUser);
+  app.post("/users/insert", addUsr);
+};
+
 const index = async (_req: Request, res: Response) => {
   try {
-    console.log(_req.body.token);
-
-    console.log(_req.body.tst);
     await jwt.verify(_req.body.token, process.env.TOKEN_SECRET as string);
   } catch (err) {
     res.status(401);
     res.json(`invalid token ${err}`);
-
     return;
   }
 
@@ -23,23 +28,18 @@ const index = async (_req: Request, res: Response) => {
   res.json(all_users);
 };
 
-const user_routes = (app: express.Application) => {
-    app.get("/users", index);
-    
-  app.get("/users/show", showUser);
-  app.post("/users/insert", addUsr);
-};
-
 const addUsr = async (_req: Request, res: Response) => {
   const fn = _req.query.fn as string;
   const ln = _req.query.ln as string;
   const pwd = _req.query.pwd as string;
 
-  try {
-    console.log(fn);
-    console.log(ln);
-    console.log(pwd);
+  if (!IsValidString(fn) || !IsValidString(fn) || !IsValidString(pwd)) {
+    res.status(400);
+    res.json("Invalid input");
+    return;
+  }
 
+  try {
     const added_usr = await usrs_crud.insert(fn, ln, pwd);
     var token = jwt.sign(
       { user: added_usr },
@@ -68,13 +68,11 @@ const showUser = async (_req: Request, res: Response) => {
 
   const user = new User();
 
-    const id = Number(_req.query.id as string);
-    if (!IsValidNumber(id))
-    {
-          res.status(400);
-        res.json("Invalid id");
-    }    
-
+  const id = Number(_req.query.id as string);
+  if (!IsValidNumber(id)) {
+    res.status(400);
+    res.json("Invalid id");
+  }
 
   try {
     const target_user = await user.show(id);
