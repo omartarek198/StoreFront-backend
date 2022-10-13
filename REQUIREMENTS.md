@@ -26,6 +26,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 - [OPTIONAL] Completed Orders by user (args: user id)[token required]
 
 ## Data Shapes
+![image](https://user-images.githubusercontent.com/87566788/195713880-ad8fc816-3dd3-456e-943b-240b37fe6474.png)
 
 #### Product
 
