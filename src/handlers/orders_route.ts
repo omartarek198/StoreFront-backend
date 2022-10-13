@@ -16,9 +16,12 @@ const index = async (_req: Request, res: Response) => {
 const order_routes = (app: express.Application) => {
   app.get("/orders", index);
   app.get("/orders/show", showOrder);
-  app.post("/orders/insert", insertOrder);
+    app.post("/orders/insert", insertOrder);
+    app.post("/orders/AddToCart", AddToCart)
 
-  app.delete("/products/delete", deleteProduct);
+    app.delete("/products/delete", deleteProduct);
+    
+    app.get("/orders/:userid/showcurrent", getCurrentOrder)
 };
 
 const showOrder = async (_req: Request, res: Response) => {
@@ -88,6 +91,53 @@ const deleteProduct = async (_req: Request, res: Response) => {
     res.json(err);
   }
 };
+
+
+
+
+const AddToCart = async (_req: Request, res: Response) => {
+  const order = new Order();
+
+  try {
+    console.log(_req.body.token);
+
+    console.log(_req.body.tst);
+      await jwt.verify(_req.body.token, process.env.TOKEN_SECRET as string);
+      
+  } catch (err) {
+    res.status(401);
+    res.json(`invalid token ${err}`);
+
+    return;
+    }
+    
+
+  const order_id = Number( _req.query.orderId) ;
+   
+    const product_id = Number(_req.query.productId);
+    
+  const quantity = Number( _req.query.quantity) ;
+  try {
+     
+
+    res.json(await order.addToOrder(order_id,product_id,quantity));
+  } catch (err) {
+    console.log(err);
+    res.status(400);
+    res.json(err);
+  }
+};
+
+
+const getCurrentOrder =async(_req: Request, res: Response) => {
+    console.log(_req.params.userid)
+    const userid = Number (_req.params.userid)
+
+
+    const order = new Order();
+      res.json(await order.getCurrentOrders(userid));
+
+}
 
  
 export default order_routes;

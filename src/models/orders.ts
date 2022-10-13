@@ -32,12 +32,36 @@ export class Order{
    
     try {
       const conn = await client.connect();
-      const sql = `INSERT INTO ORDERS (user_id) VALUES (${id}) RETURNING *;`;
+      const sql = `INSERT INTO ORDERS (user_id,status) VALUES (${id},${1}) RETURNING *;`;
       const result = await conn.query(sql);
       conn.release();
 
       console.log(result.rows);
       console.log(result.rows);
+
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Cannot  insert :  ${err}`);
+    }
+    }
+    
+
+
+
+    async addToOrder(order_id:number, product_id:number,quantity:number): Promise<Order[]> {
+   
+        try {
+        
+            
+      console.log(product_id);
+            console.log(quantity);
+      console.log(order_id);
+            
+
+      const conn = await client.connect();
+      const sql = `INSERT INTO ORDERS_PRODUCTS (quantity, order_id,product_id) VALUES (${quantity}, ${order_id}, ${product_id}) RETURNING *;`;
+      const result = await conn.query(sql);
+      conn.release();
 
       return result.rows;
     } catch (err) {
@@ -92,5 +116,33 @@ WHERE id=${id};
     } catch (err) {
       throw new Error(`Cannot  show :  ${err}`);
     }
-  }
+    }
+    
+
+    async getCurrentOrders(usr_id:number): Promise<Order[]>
+    {
+
+        console.log(usr_id)
+                console.log(usr_id)
+
+          try {
+      const conn = await client.connect();
+              const sql = `
+             SELECT * from ORDERS_PRODUCTS where order_id IN (            SELECT order_id FROM orders
+WHERE id=${usr_id} AND status = ${1}
+ );`   
+      
+      
+
+              const result = await conn.query(sql);
+              
+
+
+      conn.release();
+      console.log(result.rows);
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Cannot  show :  ${err}`);
+    }
+    }
 }
