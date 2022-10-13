@@ -33,10 +33,10 @@ export class Product {
     }
   }
 
-  async insert(): Promise<Product[]> {
+  async create(): Promise<Product[]> {
     try {
       const conn = await client.connect();
-      const sql = `INSERT INTO products(name, price,category) VALUES ('${this.name}', '${this.price}', '${this.category}');`;
+      const sql = `INSERT INTO products(name, price,category) VALUES ('${this.name}', '${this.price}', '${this.category}') RETURNING *;`;
       const result = await conn.query(sql);
       conn.release();
 
@@ -65,7 +65,7 @@ WHERE id=${id};
     try {
       const conn = await client.connect();
       const sql = `DELETE  FROM products
-WHERE id=${id};
+WHERE id=${id} RETURNING *;
 `;
       const result = await conn.query(sql);
       conn.release();
@@ -80,6 +80,22 @@ WHERE id=${id};
     return null;
   }
 
+
+ async update(id:number): Promise<Product[]> {
+    try {
+      const conn = await client.connect();
+      const sql = "UPDATE products SET name = $1, price =$2,category = $3 WHERE id= $4 RETURNING *"
+
+
+
+      const result = await conn.query(sql,[this.name,this.price,this.category,id]);
+      conn.release();
+     
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Cannot  Update :  ${err}`);
+    }
+  }
   async getByCateory(category: string): Promise<Product[]> {
     try {
       const conn = await client.connect();

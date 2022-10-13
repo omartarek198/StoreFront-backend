@@ -68,7 +68,7 @@ const addProduct = async (_req: Request, res: Response) => {
   try {
     product.set(name, category, price);
 
-    res.json(await product.insert());
+    res.json(await product.create());
   } catch (err) {
     console.log(err);
     res.status(400);

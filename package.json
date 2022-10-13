@@ -5,7 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
-    "test": "npm run build && npm run jasmine",
+    "test": "npm run build && set ENVI=test&& db-migrate --env test up && jasmine && db-migrate --env test down && db-migrate --env test down && db-migrate --env test down && db-migrate --env test down",
     "tsc": "tsc",
     "build": "npx tsc",
     "start": "nodemon src/server.ts",
@@ -22,6 +22,7 @@
     "db-migrate-pg": "^1.2.2",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
+    "if-env": "^1.0.4",
     "jasmine": "^4.4.0",
     "jasmine-spec-reporter": "^7.0.0",
     "jsonwebtoken": "^8.5.1",

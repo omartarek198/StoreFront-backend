@@ -1,9 +1,7 @@
 "use strict";
-var __importDefault =
-  (this && this.__importDefault) ||
-  function (mod) {
-    return mod && mod.__esModule ? mod : { default: mod };
-  };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 var express_1 = __importDefault(require("express"));
 var body_parser_1 = __importDefault(require("body-parser"));
@@ -16,12 +14,12 @@ app.use(body_parser_1["default"].urlencoded());
 app.use(body_parser_1["default"].urlencoded({ extended: true }));
 app.use(express_1["default"].json());
 app.get("/", function requestHandler(req, res) {
-  console.log("HMMM");
-  res.end("bye, World!");
+    console.log("HMMM");
+    res.end("bye, World!");
 });
 products_routes_1["default"](app);
 users_routes_1["default"](app);
 orders_route_1["default"](app);
 app.listen(3000, function () {
-  console.log("starting app on: " + address);
+    console.log("starting app on: " + address);
 });

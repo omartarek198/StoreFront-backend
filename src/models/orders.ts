@@ -102,7 +102,7 @@ WHERE id=${id};
       console.log(result.rows);
       return result.rows;
     } catch (err) {
-      throw new Error(`Cannot  show :  ${err}`);
+      throw new Error(`Cannot  delete :  ${err}`);
     }
   }
 

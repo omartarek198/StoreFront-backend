@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import { IsValidNumber } from "../utils";
 import { IsValidString } from "../utils";
 const usrs_crud = new User();
-
+import { hash } from "../utils";
 const user_routes = (app: express.Application) => {
   app.get("/users", index);
 
@@ -31,7 +31,7 @@ const index = async (_req: Request, res: Response) => {
 const addUsr = async (_req: Request, res: Response) => {
   const fn = _req.query.fn as string;
   const ln = _req.query.ln as string;
-  const pwd = _req.query.pwd as string;
+  const pwd = hash( _req.query.pwd as string);
 
   if (!IsValidString(fn) || !IsValidString(fn) || !IsValidString(pwd)) {
     res.status(400);
@@ -40,7 +40,7 @@ const addUsr = async (_req: Request, res: Response) => {
   }
 
   try {
-    const added_usr = await usrs_crud.insert(fn, ln, pwd);
+    const added_usr = await usrs_crud.create(fn, ln, pwd);
     var token = jwt.sign(
       { user: added_usr },
       process.env.TOKEN_SECRET as string
