@@ -33,3 +33,11 @@ ENVI=dev
 #### SERVER http://127.0.0.1:3000/
 #### DB PORT: 5432 (default port)
 
+
+
+## Scripts
+
+#### Start server : `npm run start` 
+
+#### run tests : `npm run test` 
+
