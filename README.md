@@ -6,8 +6,7 @@
 `POSTGRES_HOST=127.0.0.1 
 =======
 ##### POSTGRES_HOST=127.0.0.1
->>>>>>> 54f8112819be77cca23d72108dc53762a751d572
-POSTGRES_DB=storefront_dev
+ 
 
 POSTGRES_TEST_DB=storefront_test
 
