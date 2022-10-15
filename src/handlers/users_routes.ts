@@ -2,11 +2,14 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 dotenv.config();
 import { User } from "../models/users";
-import jwt from "jsonwebtoken";
+
 import { IsValidNumber } from "../utils";
 import { IsValidString } from "../utils";
 const usrs_crud = new User();
 import { hash } from "../utils";
+import { validate } from "../utils";
+
+import jwt from "jsonwebtoken";
 const user_routes = (app: express.Application) => {
   app.get("/users", index);
 
@@ -15,17 +18,14 @@ const user_routes = (app: express.Application) => {
 };
 
 const index = async (_req: Request, res: Response) => {
-  try {
-    await jwt.verify(_req.body.token, process.env.TOKEN_SECRET as string);
-  } catch (err) {
-    res.status(401);
-    res.json(`invalid token ${err}`);
-    return;
-  }
-
-  const all_users = await usrs_crud.index();
+  
+  if (validate(_req, res))
+  {
+    const all_users = await usrs_crud.index();
 
   res.json(all_users);
+  }
+  
 };
 
 const addUsr = async (_req: Request, res: Response) => {
@@ -55,14 +55,8 @@ const addUsr = async (_req: Request, res: Response) => {
 };
 
 const showUser = async (_req: Request, res: Response) => {
-  try {
-    console.log(_req.body.token);
-
-    await jwt.verify(_req.body.token, process.env.TOKEN_SECRET as string);
-  } catch (err) {
-    res.status(401);
-    res.json(`invalid token ${err}`);
-
+  if (!validate(_req, res))
+  {
     return;
   }
 

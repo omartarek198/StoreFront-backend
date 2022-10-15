@@ -1,10 +1,9 @@
 import express, { Request, Response } from "express";
 
 import { Order } from "../models/orders";
-
-import jwt from "jsonwebtoken";
+ 
 import { IsValidNumber } from "../utils";
-
+import { validate } from "../utils";
 var order = new Order();
 const index = async (_req: Request, res: Response) => {
   const all_orders = await order.index();
@@ -24,13 +23,9 @@ const order_routes = (app: express.Application) => {
 };
 
 const showOrder = async (_req: Request, res: Response) => {
-  try {
-    await jwt.verify(_req.body.token, process.env.TOKEN_SECRET as string);
-  } catch (err) {
-    res.status(401);
-    res.json(`invalid token ${err}`);
-
-    return;
+  if (!validate(_req, res))
+  {
+    return;  
   }
   const id = Number(_req.query.id as string);
   if (!IsValidNumber(id)) {
@@ -51,16 +46,9 @@ const showOrder = async (_req: Request, res: Response) => {
 const insertOrder = async (_req: Request, res: Response) => {
   const order = new Order();
 
-  try {
-    console.log(_req.body.token);
-
-    console.log(_req.body.tst);
-    await jwt.verify(_req.body.token, process.env.TOKEN_SECRET as string);
-  } catch (err) {
-    res.status(401);
-    res.json(`invalid token ${err}`);
-
-    return;
+  if (!validate(_req, res))
+  {
+    return;  
   }
 
   const usr_id = Number(_req.query.userId);
@@ -100,19 +88,10 @@ const deleteOrder = async (_req: Request, res: Response) => {
 
 const AddToCart = async (_req: Request, res: Response) => {
   const order = new Order();
-
-  try {
-    console.log(_req.body.token);
-
-    console.log(_req.body.tst);
-    await jwt.verify(_req.body.token, process.env.TOKEN_SECRET as string);
-  } catch (err) {
-    res.status(401);
-    res.json(`invalid token ${err}`);
-
-    return;
+  if (!validate(_req, res))
+  {
+    return;  
   }
-
   const order_id = Number(_req.query.orderId);
 
   const product_id = Number(_req.query.productId);

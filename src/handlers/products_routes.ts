@@ -2,9 +2,11 @@ import express, { Request, Response } from "express";
 
 import { Product } from "../models/products";
 
-import jwt from "jsonwebtoken";
+ 
 import { IsValidNumber } from "../utils";
 import { IsValidString } from "../utils";
+
+import { validate } from "../utils";
 const products_crud = new Product();
 
 const products_routes = (app: express.Application) => {
@@ -43,13 +45,9 @@ const showProduct = async (_req: Request, res: Response) => {
 
 const addProduct = async (_req: Request, res: Response) => {
   const product = new Product();
-  try {
-    await jwt.verify(_req.body.token, process.env.TOKEN_SECRET as string);
-  } catch (err) {
-    res.status(401);
-    res.json(`invalid token ${err}`);
-
-    return;
+  if (!validate(_req, res))
+  {
+    return;  
   }
 
   const name = _req.query.name as string;
