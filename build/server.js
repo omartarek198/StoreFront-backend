@@ -1,9 +1,7 @@
 "use strict";
-var __importDefault =
-  (this && this.__importDefault) ||
-  function (mod) {
-    return mod && mod.__esModule ? mod : { default: mod };
-  };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 exports.app = void 0;
 var express_1 = __importDefault(require("express"));
@@ -17,12 +15,12 @@ exports.app.use(body_parser_1["default"].urlencoded());
 exports.app.use(body_parser_1["default"].urlencoded({ extended: true }));
 exports.app.use(express_1["default"].json());
 exports.app.get("/", function requestHandler(req, res) {
-  console.log("HMMM");
-  res.end("bye, World!");
+    console.log("HMMM");
+    res.end("bye, World!");
 });
 products_routes_1["default"](exports.app);
 users_routes_1["default"](exports.app);
 orders_route_1["default"](exports.app);
 exports.app.listen(3000, function () {
-  console.log("starting app on: " + address);
+    console.log("starting app on: " + address);
 });

@@ -35,107 +35,75 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
-var users_1 = require("../models/users");
-var user = new users_1.User();
-describe("testing user CRUD", function () {
-    it("has an index method", function () {
-        expect(user.index).toBeDefined();
-    });
-    it("has a create method", function () {
-        expect(user.create).toBeDefined();
-    });
-    it("has a update method", function () {
-        expect(user.update).toBeDefined();
-    });
-    it("has a delete method", function () {
-        expect(user["delete"]).toBeDefined();
-    });
-    it("expect index() to equal [] ", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var _a;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _a = expect;
-                    return [4 /*yield*/, user.index()];
+var supertest_1 = __importDefault(require("supertest"));
+var server_1 = require("../server");
+var request = supertest_1["default"](server_1.app);
+describe("Testing products endpoints", function () {
+    it("tests /", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get("/products/")];
                 case 1:
-                    _a.apply(void 0, [_b.sent()]).toEqual([]);
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    console.log(response.status);
                     return [2 /*return*/];
             }
         });
     }); });
-    it("expect create(user_fn,user_ln,user_pwd) to equal [user_fn,user_ln,user_pwd] ", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var created_obj;
+    it("tests show", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, user.create("user_fn", "user_ln", "user_pwd")];
+                case 0: return [4 /*yield*/, request.get("/products/show/?id=1")];
                 case 1:
-                    created_obj = _a.sent();
-                    expect(created_obj).toEqual([
-                        {
-                            id: 1,
-                            firstname: "user_fn",
-                            lastname: "user_ln",
-                            pwd: "user_pwd"
-                        },
-                    ]);
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    console.log(response.status);
                     return [2 /*return*/];
             }
         });
     }); });
-    it("expect show(id) to equal [user_fn,user_ln,user_pwd] ", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var selected_obj;
+    it("tests /Create invaid input", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, user.show(1)];
+                case 0: return [4 /*yield*/, request.post("/products/insert")];
                 case 1:
-                    selected_obj = _a.sent();
-                    expect(selected_obj).toEqual([
-                        {
-                            id: 1,
-                            firstname: "user_fn",
-                            lastname: "user_ln",
-                            pwd: "user_pwd"
-                        },
-                    ]);
+                    response = _a.sent();
+                    expect(response.status).toBe(401);
+                    console.log(response.status);
                     return [2 /*return*/];
             }
         });
     }); });
-    it("expect update() to equal [user_fn,user_ln,newPwd] ", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var updated_obj;
+    it("Creates Product with no token", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, user.update("user_fn", "user_ln", "newPwd")];
+                case 0: return [4 /*yield*/, request.post("/products/insert?name=p1&price=199&category=tech")];
                 case 1:
-                    updated_obj = _a.sent();
-                    expect(updated_obj).toEqual([
-                        {
-                            id: 1,
-                            firstname: "user_fn",
-                            lastname: "user_ln",
-                            pwd: "newPwd"
-                        },
-                    ]);
+                    response = _a.sent();
+                    expect(response.status).toBe(401);
+                    console.log(response.status);
                     return [2 /*return*/];
             }
         });
     }); });
-    it("expect delete() to equal [user_fn,user_ln,newPwd] ", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var deleted_obj;
+    it("Filters products", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, user["delete"](1)];
+                case 0: return [4 /*yield*/, request.get("/products/filter?category=tech")];
                 case 1:
-                    deleted_obj = _a.sent();
-                    expect(deleted_obj).toEqual([
-                        {
-                            id: 1,
-                            firstname: "user_fn",
-                            lastname: "user_ln",
-                            pwd: "newPwd"
-                        },
-                    ]);
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    console.log(response.status);
                     return [2 /*return*/];
             }
         });

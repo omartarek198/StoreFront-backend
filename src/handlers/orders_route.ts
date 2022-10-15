@@ -67,6 +67,11 @@ const insertOrder = async (_req: Request, res: Response) => {
 };
 
 const deleteOrder = async (_req: Request, res: Response) => {
+
+    if (!validate(_req, res))
+  {
+    return;  
+  }
   const order = new Order();
 
   const id = Number(_req.query.id as string);
@@ -117,6 +122,13 @@ const AddToCart = async (_req: Request, res: Response) => {
 };
 
 const getCurrentOrder = async (_req: Request, res: Response) => {
+
+
+    if (!validate(_req, res))
+  {
+    return;  
+    }
+  
   console.log(_req.params.userid);
   const userid = Number(_req.params.userid);
   if (!IsValidNumber(userid)) {

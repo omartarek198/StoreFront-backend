@@ -6,24 +6,72 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 
-#### Products
+## Products
 
-- Index [GET] "/products"
-- Show [GET] "/products/show"
-- Create [GET]"/products/insert"[token required]
-- [OPTIONAL] Top 5 most popular products
-- [OPTIONAL] Products by category [GET]"/products/filter"
+#### TITLE: INDEX
+#### VERB: `GET`
+#### FUNCTIONALITY : Returns all products
+#### PARAMS: 
+#### TOKEN REQUIRED: no
+#### URL: `http://127.0.0.1:3000/products`
 
-#### Users
+#### TITLE: SHOW
+#### VERB: `GET`
+#### FUNCTIONALITY : Returns one product
+#### PARAMS: id <int>
+#### TOKEN REQUIRED: no
+#### URL: `http://127.0.0.1:3000/products/show?id=1`
+  
+#### TITLE: CREATE
+#### VERB: `POST`
+#### FUNCTIONALITY : Creates one product
+#### PARAMS: name <string> price <number> category <string>
+#### TOKEN REQUIRED: Yes
+#### URL: `http://127.0.0.1:3000/products/insert?name=p1&price=199&category=tech`
+  
+ 
+#### TITLE: FILTER
+#### VERB: `GET`
+#### FUNCTIONALITY : Returns products in category
+#### PARAMS: category <string> 
+#### TOKEN REQUIRED: no
+#### URL: `http://127.0.0.1:3000/products/filter?category=tech`
+  
 
-- Index [GET]"/users/"
-- Show [GET]"/users/show [token required]
-- Create [POST] "/users/insert"[token required]
 
-#### Orders
+## Users
+  
+#### TITLE: INDEX
+#### VERB: `GET`
+#### FUNCTIONALITY : Returns all users
+#### PARAMS: 
+#### TOKEN REQUIRED: no
+#### URL: `http://127.0.0.1:3000/users/`
+  
+#### TITLE: SHOW
+#### VERB: `GET`
+#### FUNCTIONALITY : Returns one user
+#### PARAMS: id <int>
+#### TOKEN REQUIRED: Yes
+#### URL: `http://127.0.0.1:3000/users/show?id=1`
 
-- Current Order by user (args: user id)[token required] [GET]"/orders/:userid/showcurrent"
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+    
+#### TITLE: CREATE
+#### VERB: `POST`
+#### FUNCTIONALITY : CREATES ONE USER & returns token in response body
+#### PARAMS: fn <string> ln <string> pwd <string>
+#### TOKEN REQUIRED: no
+#### URL: `http://127.0.0.1:3000/users/insert?fn=user&ln=123&pwd=1234`
+
+## Orders
+  
+#### TITLE: OrdersByUser
+#### VERB: `Get`
+#### FUNCTIONALITY : Returns completed orders by user
+#### PARAMS: userId <int>
+#### TOKEN REQUIRED: Yes
+#### URL: `http://127.0.0.1:3000/orders/:userId/showcurrent`
+
 
 ## Data Shapes
 ![image](https://user-images.githubusercontent.com/87566788/195713880-ad8fc816-3dd3-456e-943b-240b37fe6474.png)
