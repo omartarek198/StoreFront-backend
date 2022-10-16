@@ -20,6 +20,7 @@ if (ENVI === "dev") {
   client = new Pool({
     host: POSTGRES_HOST,
     database: POSTGRES_DB,
+     port: process.env.POSTGRES_PORT as unknown as number,
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
   });
@@ -30,6 +31,7 @@ if (ENVI === "test") {
   client = new Pool({
     host: POSTGRES_HOST,
     database: POSTGRES_TEST_DB,
+     port: process.env.POSTGRES_PORT as unknown as number,
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
   });

@@ -14,6 +14,7 @@ if (ENVI === "dev") {
     client = new pg_1.Pool({
         host: POSTGRES_HOST,
         database: POSTGRES_DB,
+        port: process.env.POSTGRES_PORT,
         user: POSTGRES_USER,
         password: POSTGRES_PASSWORD
     });
@@ -24,6 +25,7 @@ if (ENVI === "test") {
     client = new pg_1.Pool({
         host: POSTGRES_HOST,
         database: POSTGRES_TEST_DB,
+        port: process.env.POSTGRES_PORT,
         user: POSTGRES_USER,
         password: POSTGRES_PASSWORD
     });
