@@ -3,7 +3,6 @@
 #### run `npm install` to download dependancies 
 #### Create a new .env file in the root directory of your project folder with the following values
 
-`POSTGRES_HOST=127.0.0.1 
 =======
 ##### POSTGRES_HOST=127.0.0.1
  
